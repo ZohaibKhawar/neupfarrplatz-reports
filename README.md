@@ -2,6 +2,8 @@
 
 A static website of twelve study reports on the 1995–1998 excavation at Neupfarrplatz in Regensburg, with pages on the city's geology, its history, and how ordinary people were buried in the Middle Ages.
 
+**Live:** https://zohaibkhawar.github.io/neupfarrplatz-reports/
+
 Everything is real and sourced. The reports are summaries compiled from published sources (30 of them, listed in `sources.html`), not the excavators' official reports. They add no measurements, dates or finds of their own. Where sources disagree, both answers are given; where the sources are silent, a grey "Not published online" box says so.
 
 ## Pages
