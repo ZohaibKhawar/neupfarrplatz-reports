@@ -183,5 +183,70 @@
     return out + "</svg>";
   }
 
-  window.FIG = { layers: layers, synagogue: synagogue, xsec: xsec, ensurePatterns: ensurePatterns };
+  /* ---------- A medieval churchyard and one grave (schematic) ---------- */
+  function churchyard() {
+    ensurePatterns();
+    var W = 820, H = 400;
+    var out = svgOpen(W, H, "Schematic medieval churchyard in plan, and a single grave in section");
+    function T(x, y, s, o) {
+      o = o || {};
+      return '<text x="' + x + '" y="' + y + '" class="fig-t' + (o.sm ? " fig-sm" : "") + '" fill="' + (o.c || "var(--ink)") + '"' +
+        (o.a ? ' text-anchor="' + o.a + '"' : "") + (o.b ? ' font-weight="700"' : "") + ">" + s + "</text>";
+    }
+    // --- left: plan of a churchyard ---
+    out += T(24, 26, "Churchyard, seen from above", { b: 1 });
+    out += '<rect x="24" y="44" width="430" height="300" rx="40" fill="#cdbf9f" fill-opacity=".45" stroke="var(--ink)" stroke-width="3"/>';
+    out += T(40, 336, "consecrated ground inside a wall [24]", { sm: 1, c: "var(--ink-2)" });
+    // church: nave + apse to the east
+    var cx = 190, cy = 160;
+    out += '<rect x="' + cx + '" y="' + (cy - 34) + '" width="140" height="68" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/>' +
+      '<path d="M' + (cx + 140) + "," + (cy - 26) + " A26,26 0 0 1 " + (cx + 140) + "," + (cy + 26) + '" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/>' +
+      T(cx + 70, cy - 4, "church", { a: "middle", b: 1 }) + T(cx + 70, cy + 12, "clergy, benefactors", { a: "middle", sm: 1, c: "var(--ink-2)" });
+    // graves: west-east rectangles, some cutting older ones
+    var graves = [
+      [52, 78], [100, 74], [52, 112], [100, 116], [148, 96], [60, 158], [108, 162], [64, 204], [112, 200], [160, 232],
+      [220, 230], [268, 236], [316, 226], [210, 266], [262, 276], [314, 270], [200, 86], [250, 80], [300, 88], [370, 96]
+    ];
+    graves.forEach(function (g, k) {
+      var old = k % 5 === 3;
+      out += '<rect x="' + g[0] + '" y="' + g[1] + '" width="38" height="13" rx="3" fill="' + (old ? "none" : "#8f7a5a") + '" stroke="#3b3125" stroke-width="1.2"' + (old ? ' stroke-dasharray="3 2"' : "") + "/>";
+      if (k % 4 === 0) out += '<path d="M' + (g[0] + 4) + "," + (g[1] - 7) + "v10M" + (g[0] - 0.5) + "," + (g[1] - 3) + "h9" + '" stroke="#5b3d1f" stroke-width="2"/>';
+    });
+    // charnel house south-east of the church
+    out += '<rect x="372" y="236" width="52" height="40" fill="var(--paper)" stroke="var(--accent-2)" stroke-width="2.5"/>' +
+      T(398, 260, "Karner", { a: "middle", sm: 1, b: 1, c: "var(--accent-2)" });
+    out += T(366, 300, "charnel house [29]", { a: "end", sm: 1, c: "var(--accent-2)" });
+    // legend
+    out += '<rect x="24" y="360" width="22" height="9" rx="2" fill="#8f7a5a" stroke="#3b3125"/>' + T(52, 369, "grave, head to the west", { sm: 1 });
+    out += '<rect x="250" y="360" width="22" height="9" rx="2" fill="none" stroke="#3b3125" stroke-dasharray="3 2"/>' + T(278, 369, "older grave, dug through", { sm: 1 });
+    out += '<path d="M28,384 v10 M23,388 h9" stroke="#5b3d1f" stroke-width="2"/>' + T(52, 394, "wooden cross [24]", { sm: 1 });
+    out += '<path d="M448,62 V34" stroke="var(--ink)" stroke-width="2"/><path d="M442,42 L448,28 L454,42z" fill="var(--ink)"/>' + T(448, 20, "N", { a: "middle", b: 1 });
+    // --- right: one grave in section ---
+    var gx = 500, gy = 120;
+    out += T(gx, 26, "One grave, seen from the side", { b: 1 });
+    out += '<rect x="' + gx + '" y="' + gy + '" width="300" height="200" fill="#b8a27c" fill-opacity=".55"/>' +
+      '<rect x="' + gx + '" y="' + gy + '" width="300" height="200" fill="url(#pt-clay)"/>' +
+      '<path d="M' + gx + "," + gy + "H" + (gx + 300) + '" stroke="var(--ink)" stroke-width="2.5"/>';
+    // wooden cross above the head end (west)
+    out += '<path d="M' + (gx + 70) + "," + (gy - 2) + "V" + (gy - 54) + "M" + (gx + 54) + "," + (gy - 40) + "H" + (gx + 86) + '" stroke="#5b3d1f" stroke-width="5" stroke-linecap="round"/>';
+    // grave cut and fill
+    out += '<path d="M' + (gx + 40) + "," + gy + " L" + (gx + 46) + "," + (gy + 120) + " L" + (gx + 262) + "," + (gy + 120) + " L" + (gx + 268) + "," + gy + 'Z" fill="#9c8562" stroke="#3b3125" stroke-width="1.5" stroke-dasharray="5 3"/>';
+    // body in a shroud, extended on the back, head west
+    out += '<rect x="' + (gx + 62) + '" y="' + (gy + 92) + '" width="186" height="22" rx="11" fill="#ece6d6" stroke="#3b3125" stroke-width="1.5"/>' +
+      '<circle cx="' + (gx + 78) + '" cy="' + (gy + 103) + '" r="10" fill="#ece6d6" stroke="#3b3125" stroke-width="1.5"/>' +
+      '<path d="M' + (gx + 100) + "," + (gy + 94) + "v18M" + (gx + 140) + "," + (gy + 94) + "v18M" + (gx + 180) + "," + (gy + 94) + "v18M" + (gx + 220) + "," + (gy + 94) + "v18" + '" stroke="#b8ad95" stroke-width="1"/>';
+    out += T(gx + 155, gy + 86, "body in a shroud, on its back [24][27]", { a: "middle", sm: 1, c: "#1e1a15" });
+    // older bones below
+    [[gx + 70, gy + 150], [gx + 110, gy + 158], [gx + 160, gy + 146], [gx + 200, gy + 160], [gx + 236, gy + 152]].forEach(function (b, k) {
+      out += '<path d="M' + b[0] + "," + b[1] + " l" + (k % 2 ? 22 : -18) + "," + (k % 2 ? 6 : -4) + '" stroke="#f1ead8" stroke-width="5" stroke-linecap="round"/>';
+    });
+    out += T(gx + 150, gy + 186, "bones of an earlier burial", { a: "middle", sm: 1, c: "#1e1a15" });
+    out += T(gx, gy + 222, "W · head end", { sm: 1, b: 1 }) + T(gx + 300, gy + 222, "E · face looks east", { sm: 1, b: 1, a: "end" });
+    out += T(gx, gy + 244, "After about two generations bones were often", { sm: 1, c: "var(--ink-2)" });
+    out += T(gx, gy + 258, "dug up and moved to the charnel house [24]", { sm: 1, c: "var(--ink-2)" });
+    out += T(W - 4, H - 4, "schematic", { sm: 1, a: "end", c: "var(--ink-2)" });
+    return out + "</svg>";
+  }
+
+  window.FIG = { layers: layers, synagogue: synagogue, xsec: xsec, churchyard: churchyard, ensurePatterns: ensurePatterns };
 })();
