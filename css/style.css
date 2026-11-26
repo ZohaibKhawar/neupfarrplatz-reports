@@ -1,4 +1,4 @@
-/* Rupen-Nordfeta report site. Field-report look: paper, ink, mono labels. */
+/* Neupfarrplatz report site. Field-report look: paper, ink, mono labels. */
 :root {
   --paper: #f4efe4;
   --paper-2: #ebe3d3;
@@ -113,6 +113,11 @@ main { padding: 8px 0 56px; }
   padding: 5px 7px; border-radius: 3px; border: 1.5px solid currentColor; color: var(--fiction); white-space: nowrap;
 }
 .tag.real { color: var(--real); }
+.tag.gap { color: var(--ink-2); }
+.tag.np { color: var(--accent); }
+.notice.gap { border-color: var(--ink-2); background: var(--paper-2); }
+.stamp.real { color: var(--real); border-color: var(--real); }
+.tl-cell.np { border-left: 3px solid var(--accent); padding-left: 10px; }
 .callout { margin: 1.2em 0; padding: 12px 14px; border: 1px dashed var(--ink-2); border-radius: var(--radius); font-size: 15.5px; background: var(--paper-2); }
 
 /* Hero */
@@ -207,6 +212,7 @@ a.btn.primary:hover { background: var(--accent); border-color: var(--accent); }
 .empty { padding: 26px; text-align: center; color: var(--ink-2); border: 1px dashed var(--rule); border-radius: var(--radius); }
 
 .report { max-width: 860px; }
+.report h1[tabindex="-1"]:focus { outline: none; }
 .rnav { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 18px 0 6px; font: 500 13px/1.2 var(--mono); }
 .rnav span { display: flex; gap: 14px; }
 .rnav a { text-decoration: none; }
